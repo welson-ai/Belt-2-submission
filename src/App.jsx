@@ -1,27 +1,46 @@
-import { useWallet } from "./hooks/useWallet";
-import WalletConnect from "./components/WalletConnect";
-import Balance from "./components/Balance";
-import SendPayment from "./components/SendPayment";
-import ContractPanel from "./components/ContractPanel";
 import "./App.css";
 
 function App() {
-  const { publicKey, connect, disconnect, signTransaction, error } = useWallet();
-
   return (
-    <div className="app">
-      <div className="header">
-        <h1>🌟 Stellar Level 2 dApp</h1>
-        <p className="subtitle">Multi-wallet · Smart Contract · Testnet</p>
+    <div className="signup-container">
+      <div className="signup-form">
+        <h1 className="form-title">Create Your Stellar Account</h1>
+        
+        <div className="form-group">
+          <label className="form-label">Email Address</label>
+          <input 
+            type="email" 
+            className="form-input" 
+            placeholder="Enter your email"
+          />
+        </div>
+        
+        <div className="form-group">
+          <label className="form-label">Username</label>
+          <input 
+            type="text" 
+            className="form-input" 
+            placeholder="Choose a username"
+          />
+        </div>
+        
+        <div className="form-group">
+          <label className="form-label">Password</label>
+          <input 
+            type="password" 
+            className="form-input" 
+            placeholder="Create a password"
+          />
+        </div>
+        
+        <button className="generate-button">
+          Generate New Stellar Account
+        </button>
+        
+        <div className="connect-wallet-text">
+          Connect Wallet
+        </div>
       </div>
-      <WalletConnect publicKey={publicKey} connect={connect} disconnect={disconnect} error={error} />
-      {publicKey && (
-        <>
-          <Balance publicKey={publicKey} />
-          <ContractPanel publicKey={publicKey} signTransaction={signTransaction} />
-          <SendPayment publicKey={publicKey} signTransaction={signTransaction} />
-        </>
-      )}
     </div>
   );
 }

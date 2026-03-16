@@ -1,3 +1,15 @@
+# Submission Requirements
+
+## Application Screenshots
+
+### Before Connect Wallet
+![Before Connect Wallet](imagey.png)
+
+### After Wallet Connection - Multiple Wallet Options
+![Multiple Wallet Options](image.png)
+
+---
+
 # Stellar Soroban dApp - Level 2
 
 A comprehensive decentralized application built on Stellar blockchain with multi-wallet support and smart contract integration.
