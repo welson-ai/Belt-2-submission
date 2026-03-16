@@ -1,5 +1,14 @@
 # Submission Requirements
 
+## Errors Encountered
+- SSL certificate issues during contract deployment
+- Network connectivity problems with Stellar testnet
+- Module detection challenges with Stellar Wallets Kit v2.0.1
+- WASM compilation target configuration requirements
+
+## Contract Address
+CBY2PUQ4XVSZWO24MR7ZOBL4OQBWFXDZLKH7VX36QG3W3LES3V4KLCWH
+
 ## Application Screenshots
 
 ### Before Connect Wallet
