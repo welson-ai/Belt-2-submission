@@ -3,7 +3,7 @@
 ## Application Screenshots
 
 ### Before Connect Wallet
-![Before Connect Wallet](imagey.png)
+![Before Connect Wallet](public/imagey.png)
 
 ### After Wallet Connection - Multiple Wallet Options
 ![Multiple Wallet Options](image.png)
