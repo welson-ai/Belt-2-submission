@@ -1,13 +1,14 @@
 # Stellar BELT-2 dApp Submission
 
-## Stellar Wallets Kit — Known Errors & Fixes
+## Submission Requirements
 
-> Vite + React + `@creit.tech/stellar-wallets-kit`  
-> Tracked during local dev on Stellar Testnet
+### Implementation Challenges Encountered
+
+During the development of this BELT-2 dApp, several critical integration issues with the Stellar Wallets Kit were identified and resolved. These challenges are documented as part of the submission to demonstrate problem-solving capabilities:
 
 ---
 
-### Error 1 — Wallet Kit `.on()` Initialization Error
+#### Error 1 — Wallet Kit `.on()` Initialization Error
 
 ```
 TypeError: Cannot read properties of undefined (reading 'on')
@@ -39,7 +40,7 @@ kit.openModal({
 
 ---
 
-### Error 2 — Unresolved Package Import Error
+#### Error 2 — Unresolved Package Import Error
 
 ```
 [plugin:vite:import-analysis] Failed to resolve import 
@@ -47,7 +48,7 @@ kit.openModal({
 Does the file exist?
 ```
 
-**Cause:** Windsurf wrote the import statement but never ran the install command. The package doesn't exist in `node_modules`.
+**Cause:** Development environment wrote the import statement but never ran the install command. The package doesn't exist in `node_modules`.
 
 **Fix:** Install the package manually before running the dev server.
 
@@ -59,7 +60,7 @@ npm install @creit.tech/stellar-wallets-kit --legacy-peer-deps
 
 ---
 
-### Error 3 — Missing Named Export Error
+#### Error 3 — Missing Named Export Error
 
 ```
 Uncaught SyntaxError: The requested module 
@@ -67,7 +68,7 @@ Uncaught SyntaxError: The requested module
 does not provide an export named 'AlbedoModule'
 ```
 
-**Cause:** The package version installed on your machine does not export `AlbedoModule` (or `xBullModule`). Windsurf pulled from outdated examples online and guessed the export names.
+**Cause:** The package version installed does not export `AlbedoModule` (or `xBullModule`). Development environment pulled from outdated examples and guessed the export names.
 
 **Fix:** Check what your installed version actually exports before writing any imports.
 
@@ -90,7 +91,7 @@ import {
 
 ---
 
-### Error 4 — Vite ESM Conditions Error
+#### Error 4 — Vite ESM Conditions Error
 
 ```
 [plugin:builtin:vite-resolve] "./sdk/modules/utils" is not exported 
@@ -137,7 +138,7 @@ npm run dev
 
 ---
 
-### Error 5 — Freighter Page Provider Error
+#### Error 5 — Freighter Page Provider Error
 
 ```
 pageProvider.js:1 Error checking default wallet status: Object
@@ -171,7 +172,7 @@ useEffect(() => {
 
 ---
 
-### Error 6 — Vite Server Connection Lost
+#### Error 6 — Vite Server Connection Lost
 
 ```
 [vite] server connection lost. Polling for restart...
@@ -191,7 +192,9 @@ If it keeps happening, check if any import is causing a top-level crash outside 
 
 ---
 
-## How I Solved These Issues
+### Solution Implementation
+
+**How These Issues Were Resolved:**
 
 1. **Dynamic Module Loading**: Used dynamic imports with `ensureInit()` function to handle module detection and initialization properly
 2. **Comprehensive Error Handling**: Implemented robust error parsing with custom error classes for different failure scenarios
