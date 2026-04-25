@@ -9,7 +9,7 @@ const ensureInit = async () => {
   if (initialized && Kit) return;
 
   const swk = await import("@creit.tech/stellar-wallets-kit");
-  console.log("All SWK exports:", Object.keys(swk));
+  console.log("Stellar Wallets Kit exports:", Object.keys(swk));
 
   Kit = swk.StellarWalletsKit;
 
@@ -27,7 +27,7 @@ const ensureInit = async () => {
     )
   );
 
-  console.log("Found module keys:", moduleKeys);
+  console.log("Detected wallet modules:", moduleKeys);
 
   const modules = moduleKeys
     .map((k) => {

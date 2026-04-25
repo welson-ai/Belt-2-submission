@@ -15,7 +15,7 @@ pub struct AppContract;
 
 #[contractimpl]
 impl AppContract {
-    /// Increment counter by 1 and return new value
+    /// Increment BELT-2 counter by 1 and return new value
     pub fn increment(env: Env) -> u32 {
         let count: u32 = env
             .storage()

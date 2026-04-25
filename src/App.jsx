@@ -4,7 +4,7 @@ function App() {
   return (
     <div className="signup-container">
       <div className="signup-form">
-        <h1 className="form-title">Create Your Stellar Account</h1>
+        <h1 className="form-title">Create Your BELT-2 Stellar Account</h1>
         
         <div className="form-group">
           <label className="form-label">Email Address</label>
@@ -34,7 +34,7 @@ function App() {
         </div>
         
         <button className="generate-button">
-          Generate New Stellar Account
+          Generate BELT-2 Stellar Account
         </button>
         
         <div className="connect-wallet-text">

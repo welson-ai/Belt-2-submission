@@ -1,6 +1,6 @@
 export class WalletNotFoundError extends Error {
   constructor() {
-    super("Wallet not found. Please install a supported wallet extension.");
+    super("Wallet extension not detected. Please install a supported wallet.");
     this.type = "WALLET_NOT_FOUND";
   }
 }

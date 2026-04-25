@@ -1,10 +1,10 @@
 {
-  "name": "belt-2",
+  "name": "stellar-belt2-dapp",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "start": "vite --port 3000",
     "build": "vite build",
     "preview": "vite preview"
   },

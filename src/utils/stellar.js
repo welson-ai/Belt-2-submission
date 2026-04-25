@@ -13,7 +13,7 @@ import {
 
 import { InsufficientBalanceError } from "./errors";
 
-export const CONTRACT_ID = "YOUR_CONTRACT_ID_HERE";
+export const CONTRACT_ID = "DEPLOYED_CONTRACT_ID";
 const NETWORK_PASSPHRASE = Networks.TESTNET;
 
 const horizonServer = new Horizon.Server("https://horizon-testnet.stellar.org");

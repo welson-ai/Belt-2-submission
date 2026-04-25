@@ -1,4 +1,4 @@
-# Submission Requirements
+# Stellar BELT-2 dApp Submission
 
 ## Errors Encountered
 - SSL certificate issues during contract deployment
