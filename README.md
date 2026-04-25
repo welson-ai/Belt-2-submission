@@ -1,10 +1,206 @@
 # Stellar BELT-2 dApp Submission
 
-## Errors Encountered
-- SSL certificate issues during contract deployment
-- Network connectivity problems with Stellar testnet
-- Module detection challenges with Stellar Wallets Kit v2.0.1
-- WASM compilation target configuration requirements
+## Stellar Wallets Kit — Known Errors & Fixes
+
+> Vite + React + `@creit.tech/stellar-wallets-kit`  
+> Tracked during local dev on Stellar Testnet
+
+---
+
+### Error 1 — Wallet Kit `.on()` Initialization Error
+
+```
+TypeError: Cannot read properties of undefined (reading 'on')
+at initKit (App.jsx:22:24)
+at App.jsx:44:5
+```
+
+**Cause:** Kit was initialized using the old API inside `useEffect` with event listeners. The `.on()` method no longer exists in the current version.
+
+**Fix:** Remove all `.on()` listeners. Initialize the kit at **module level** (outside the component) and use the `onWalletSelected` callback inside `openModal()` instead.
+
+```js
+// Correct initialization — outside the component
+const kit = new StellarWalletsKit({
+  network: WalletNetwork.TESTNET,
+  selectedWalletId: FREIGHTER_ID,
+  modules: [new FreighterModule()],
+})
+
+// Correct connect flow
+kit.openModal({
+  onWalletSelected: async (option) => {
+    kit.setWallet(option.id)
+    const { address } = await kit.getAddress()
+    setAddress(address)
+  }
+})
+```
+
+---
+
+### Error 2 — Unresolved Package Import Error
+
+```
+[plugin:vite:import-analysis] Failed to resolve import 
+"@creit.tech/stellar-wallets-kit" from "src/App.jsx". 
+Does the file exist?
+```
+
+**Cause:** Windsurf wrote the import statement but never ran the install command. The package doesn't exist in `node_modules`.
+
+**Fix:** Install the package manually before running the dev server.
+
+```bash
+npm install @creit.tech/stellar-wallets-kit --legacy-peer-deps
+```
+
+> Use `--legacy-peer-deps` if you get peer dependency conflicts with your React version.
+
+---
+
+### Error 3 — Missing Named Export Error
+
+```
+Uncaught SyntaxError: The requested module 
+'/node_modules/.vite/deps/@creit__tech_stellar-wallets-kit.js' 
+does not provide an export named 'AlbedoModule'
+```
+
+**Cause:** The package version installed on your machine does not export `AlbedoModule` (or `xBullModule`). Windsurf pulled from outdated examples online and guessed the export names.
+
+**Fix:** Check what your installed version actually exports before writing any imports.
+
+```bash
+node -e "console.log(Object.keys(require('./node_modules/@creit.tech/stellar-wallets-kit')))"
+```
+
+Then use **only** what is printed. Safe minimal import:
+
+```js
+import {
+  StellarWalletsKit,
+  WalletNetwork,
+  FREIGHTER_ID,
+  FreighterModule,
+} from '@creit.tech/stellar-wallets-kit'
+```
+
+> Start with `FreighterModule` only. Add other wallets after it works.
+
+---
+
+### Error 4 — Vite ESM Conditions Error
+
+```
+[plugin:builtin:vite-resolve] "./sdk/modules/utils" is not exported 
+under the conditions ["module", "browser", "development", "import"] 
+from package @creit.tech/stellar-wallets-kit
+```
+
+**Cause:** Vite's strict ESM resolver cannot resolve internal paths inside the package (`./sdk/modules/utils`). The package uses internal relative paths that don't match Vite's browser export conditions.
+
+**Fix — Step 1:** Pin to a working version of the package.
+
+```bash
+npm remove @creit.tech/stellar-wallets-kit
+npm install @creit.tech/stellar-wallets-kit@0.9.4 --legacy-peer-deps
+```
+
+**Fix — Step 2:** Update `vite.config.js` to exclude the package from pre-bundling.
+
+```js
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  optimizeDeps: {
+    exclude: ['@creit.tech/stellar-wallets-kit'],
+  },
+  build: {
+    commonjsOptions: {
+      include: [/@creit.tech\/stellar-wallets-kit/, /node_modules/],
+    },
+  },
+})
+```
+
+**Fix — Step 3:** Clear the Vite cache and restart.
+
+```bash
+rm -rf node_modules/.vite
+npm run dev
+```
+
+> If issues persist, switch to **Next.js** and add `transpilePackages: ['@creit.tech/stellar-wallets-kit']` to `next.config.js`. Next.js handles mixed CJS/ESM packages significantly better than Vite.
+
+---
+
+### Error 5 — Freighter Page Provider Error
+
+```
+pageProvider.js:1 Error checking default wallet status: Object
+k @ pageProvider.js:1
+```
+
+**Cause:** The Freighter browser extension runs its own status checks in `pageProvider.js` before the kit is fully initialized. This is fired by the extension itself, not your code.
+
+**Fix:** This error is mostly harmless and comes from the Freighter extension. Suppress it by delaying kit initialization until after the page is fully mounted.
+
+```js
+const [kit, setKit] = useState(null)
+
+useEffect(() => {
+  // Small delay lets Freighter finish its own init first
+  const timer = setTimeout(() => {
+    try {
+      const k = new StellarWalletsKit({
+        network: WalletNetwork.TESTNET,
+        selectedWalletId: FREIGHTER_ID,
+        modules: [new FreighterModule()],
+      })
+      setKit(k)
+    } catch (e) {
+      console.error('Kit init failed:', e.message)
+    }
+  }, 100)
+  return () => clearTimeout(timer)
+}, [])
+```
+
+---
+
+### Error 6 — Vite Server Connection Lost
+
+```
+[vite] server connection lost. Polling for restart...
+```
+
+**Cause:** This is a cascading crash — not a root cause on its own. It appears whenever any of the above errors kills the Vite dev server process entirely.
+
+**Fix:** Identify and fix the root error first (usually Error 3 or Error 4 above). Then:
+
+```bash
+# Hard restart
+rm -rf node_modules/.vite
+npm run dev
+```
+
+If it keeps happening, check if any import is causing a top-level crash outside of React's error boundary.
+
+---
+
+## How I Solved These Issues
+
+1. **Dynamic Module Loading**: Used dynamic imports with `ensureInit()` function to handle module detection and initialization properly
+2. **Comprehensive Error Handling**: Implemented robust error parsing with custom error classes for different failure scenarios
+3. **Module Detection**: Added automatic detection of available wallet modules instead of hardcoding them
+4. **Fallback Mechanisms**: Implemented fallback to `allowAllModules()` when specific module instantiation fails
+5. **Initialization Timing**: Added proper initialization sequencing to avoid race conditions with wallet extensions
+6. **Version Compatibility**: Ensured compatibility with the latest Stellar Wallets Kit v2.0.1 API changes
+
+---
 
 ## Contract Address
 CACC6ZI2U3BOUIBJURYBIT7PY4HXFINMFPJCUV6WDZEEP6QEJ7CJZFCY
