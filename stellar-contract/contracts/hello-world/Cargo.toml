@@ -1,7 +1,8 @@
 [package]
-name = "hello_world"
-version = "0.1.0"
+name = "belt2_hello_world"
+version = "1.0.0"
 edition = "2021"
+description = "BELT-2 Stellar Soroban smart contract"
 
 [lib]
 crate-type = ["cdylib"]

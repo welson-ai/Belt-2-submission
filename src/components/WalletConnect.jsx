@@ -1,14 +1,14 @@
 const WalletConnect = ({ publicKey, connect, disconnect, error }) => (
   <div className="card">
-    <h2>🔐 Wallet</h2>
+    <h2>🔐 BELT-2 Wallet</h2>
     {!publicKey ? (
       <button className="btn primary" onClick={connect}>
-        Connect Wallet
+        Connect BELT-2 Wallet
       </button>
     ) : (
       <div>
         <p className="address">
-          ✅ {publicKey.slice(0, 8)}...{publicKey.slice(-8)}
+          ✅ BELT-2: {publicKey.slice(0, 8)}...{publicKey.slice(-8)}
         </p>
         <button className="btn danger" onClick={disconnect}>
           Disconnect

@@ -18,7 +18,7 @@ const ContractPanel = ({ publicKey, signTransaction }) => {
       setCount(c);
       setMsg(m);
     } catch (e) {
-      console.error("Load error:", e);
+      console.error("BELT-2 Load error:", e);
     }
   };
 
@@ -41,31 +41,31 @@ const ContractPanel = ({ publicKey, signTransaction }) => {
 
   return (
     <div className="card">
-      <h2>📜 Smart Contract</h2>
+      <h2>📜 BELT-2 Smart Contract</h2>
 
-      {status === STATUS.PENDING && <div className="status pending">⏳ Transaction pending...</div>}
+      {status === STATUS.PENDING && <div className="status pending">⏳ BELT-2 transaction pending...</div>}
       {status === STATUS.SUCCESS && (
         <div className="status success">
-          ✅ Success!{" "}
+          ✅ BELT-2 Success!{" "}
           <a href={`https://stellar.expert/explorer/testnet/tx/${txHash}`} target="_blank" rel="noreferrer">
             View tx ↗
           </a>
         </div>
       )}
-      {status === STATUS.ERROR && <div className="status error">❌ {errorMsg}</div>}
+      {status === STATUS.ERROR && <div className="status error">❌ BELT-2 Error: {errorMsg}</div>}
 
       <div className="contract-row">
-        <span>🔢 Counter: <strong>{count ?? "..."}</strong></span>
+        <span>🔢 BELT-2 Counter: <strong>{count ?? "..."}</strong></span>
         <button className="btn primary" onClick={() => run(() => incrementCounter(publicKey, signTransaction))} disabled={status === STATUS.PENDING}>
-          Increment
+          Increment BELT-2
         </button>
       </div>
 
       <div className="contract-col">
-        <span>💬 Message: <strong>{message || "..."}</strong></span>
-        <input placeholder="New message" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} />
+        <span>💬 BELT-2 Message: <strong>{message || "..."}</strong></span>
+        <input placeholder="New BELT-2 message" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} />
         <button className="btn success" onClick={() => run(() => setMessage(publicKey, newMessage, signTransaction))} disabled={status === STATUS.PENDING || !newMessage.trim()}>
-          Set Message
+          Set BELT-2 Message
         </button>
       </div>
     </div>

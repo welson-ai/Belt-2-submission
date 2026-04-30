@@ -16,8 +16,8 @@ const Balance = ({ publicKey }) => {
 
   return (
     <div className="card">
-      <h2>💰 XLM Balance</h2>
-      {loading ? <p>Loading...</p> : <p className="balance-amount">{balance} XLM</p>}
+      <h2>💰 BELT-2 XLM Balance</h2>
+      {loading ? <p>Loading balance...</p> : <p className="balance-amount">{balance} XLM</p>}
     </div>
   );
 };

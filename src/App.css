@@ -1,4 +1,4 @@
-/* Reset and base styles */
+/* BELT-2 Reset and base styles */
 * {
   margin: 0;
   padding: 0;
@@ -11,7 +11,7 @@ body {
   color: black;
 }
 
-/* Signup container */
+/* BELT-2 Signup container */
 .signup-container {
   min-height: 100vh;
   display: flex;
