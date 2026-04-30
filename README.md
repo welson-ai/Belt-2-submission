@@ -206,7 +206,7 @@ If it keeps happening, check if any import is causing a top-level crash outside 
 ---
 
 ## Contract Address
-CACC6ZI2U3BOUIBJURYBIT7PY4HXFINMFPJCUV6WDZEEP6QEJ7CJZFCY
+CCJAUPCU6EIFQK6GTAAYLW3Y4YETJAAUPAGBPFGQ2OUJPSW3WWHUCL2Z
 
 ## Application Screenshots
 
